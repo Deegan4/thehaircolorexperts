@@ -45,6 +45,16 @@ python3 -m http.server 8000
 # then visit http://localhost:8000
 ```
 
+## Deployment (GitHub Pages)
+
+The site is published to GitHub Pages by `.github/workflows/deploy-pages.yml`,
+which runs on every push to `main` (and can be run manually from the Actions tab).
+
+One-time setup: in the repo, go to **Settings → Pages → Build and deployment →
+Source** and select **GitHub Actions**. To use a custom domain, set it under the
+same Pages settings page (this writes a `CNAME` file and tells you which DNS
+records to add at your registrar).
+
 ## Business details
 
 - **Address:** 3306 Del Prado Blvd S, Cape Coral, FL 33904
