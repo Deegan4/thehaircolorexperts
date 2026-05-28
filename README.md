@@ -1,44 +1,56 @@
-# Glacier's Edge Media Website
+# The Hair Color Experts — Website
 
-A professional website for Glacier's Edge Media, a visual storytelling and content creation company.
+A redesigned marketing site for **The Hair Color Experts**, a boutique hair-color
+salon and signature workshop in Cape Coral, Florida, serving the community since 2014.
 
-## Features
+## Overview
 
-- Responsive design that works on all devices
-- Modern, clean layout with smooth animations
-- Sections for services, portfolio, results, and marketing tools
-- Integration with Instagram and YouTube social media
-- Newsletter subscription form
-- Affiliate marketing section for Stroem Scaling
+A fast, fully responsive, single-page static site built with plain HTML, CSS, and
+vanilla JavaScript — no build step or dependencies required.
 
-## File Structure
+### Sections
 
-- `glaciers-edge-media-website.html` - Main HTML file
-- `css/styles.css` - CSS styles
-- `js/main.js` - JavaScript functionality
-- `images/` - Directory for images and icons
+- **Hero** — brand introduction and primary booking call-to-action
+- **Stats** — at-a-glance trust signals
+- **Services** — hair color, balayage & ombré, highlights, corrective color, cuts &
+  styling, Brazilian blowout, treatments & perms, bridal & updos, facial waxing
+- **About** — the salon's story and approach
+- **Gallery** — a showcase of color work
+- **Workshop** — the Education Salon for industry stylists
+- **Reviews** — client testimonials
+- **Contact** — address, hours, phone, embedded map, and a booking request form
 
-## Deployment Instructions
+### Features
 
-1. Upload all files to your web hosting server
-2. Ensure the directory structure is maintained
-3. Make sure the server has proper permissions to serve the files
-4. If using a custom domain, configure DNS settings accordingly
+- Sticky header with scroll state and animated mobile navigation
+- Scroll-reveal animations (respects `prefers-reduced-motion`)
+- Scrollspy active-section highlighting
+- Client-side booking-form validation with friendly feedback
+- `HairSalon` schema.org structured data and Open Graph metadata for SEO/sharing
+- Accessible markup (semantic landmarks, ARIA labels, keyboard-friendly nav)
 
-## Social Media Links
+## File structure
 
-- Instagram: https://www.instagram.com/glaciers.edge.media
-- YouTube: https://www.youtube.com/@glaciersedgemedia
+- `index.html` — page markup and content
+- `css/styles.css` — all styling and responsive rules
+- `js/main.js` — interactions (nav, reveal, scrollspy, form)
+- `images/logo.svg` — brand monogram, also used as the favicon
 
-## Affiliate Links
+## Running locally
 
-- Stroem Scaling: https://stroemscaling.com/?fpr=isak26
+It's a static site — open `index.html` directly, or serve the folder:
 
-## Credits
+```bash
+python3 -m http.server 8000
+# then visit http://localhost:8000
+```
 
-- Images: Unsplash
-- Icons: SVG icons included in the images directory
+## Business details
 
-## License
+- **Address:** 3306 Del Prado Blvd S, Cape Coral, FL 33904
+- **Phone:** (239) 257-2243
+- **Hours:** Mon/Wed/Fri/Sat 9–5 · Tue/Thu 9–7 · Sun closed
 
-© 2024 Glacier's Edge Media. All Rights Reserved. 
+> Note: the booking form is a front-end demo and is not yet wired to a backend or
+> email service. Connect it to a form handler (e.g. Formspree, Netlify Forms, or a
+> custom endpoint) before going live.
