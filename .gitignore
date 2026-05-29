@@ -1,0 +1,16 @@
+# OS
+.DS_Store
+
+# Local-only working files / source originals (not part of the deployed site)
+Pitch_Kit/
+website.rtf
+*.mv2
+# Raw source images kept locally (optimized copies live in images/)
+/532563649_*.jpg
+/671963063_*.jpg
+/708910858_*.jpg
+/s1Cp7y1O_*.jpg
+
+# Session/tooling
+.remember/
+.claude/
