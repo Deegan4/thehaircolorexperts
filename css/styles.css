@@ -604,6 +604,68 @@ ul { margin: 0; padding: 0; list-style: none; }
 }
 .specials__media img:hover { transform: rotate(0) translateY(-4px); box-shadow: 0 26px 55px rgba(227, 34, 44, 0.3); }
 
+/* ---------- Events ---------- */
+.events { background: var(--cream-2); }
+.event-card {
+    position: relative;
+    max-width: 720px;
+    margin: 0 auto;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    padding: 52px 48px;
+    text-align: center;
+    overflow: hidden;
+}
+.event-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 5px;
+    background: var(--fire);
+}
+.event-card__eyebrow {
+    text-transform: uppercase;
+    letter-spacing: .18em;
+    font-size: .78rem;
+    font-weight: 600;
+    color: var(--copper);
+    margin-bottom: .7rem;
+}
+.event-card__title { font-size: clamp(2.1rem, 6vw, 2.9rem); margin-bottom: .2rem; }
+.event-card__sub {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.12rem;
+    color: var(--ink-soft);
+    margin-bottom: 1.4rem;
+}
+.event-card__intro { color: var(--muted); max-width: 520px; margin: 0 auto 2rem; }
+.event-card__details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    text-align: left;
+    max-width: 560px;
+    margin: 0 auto 2.2rem;
+}
+.event-card__details li {
+    background: var(--cream-2);
+    border-radius: 12px;
+    padding: 15px 18px;
+}
+.event-card__label {
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: .14em;
+    font-size: .68rem;
+    font-weight: 600;
+    color: var(--copper);
+    margin-bottom: 4px;
+}
+.event-card__value { display: block; color: var(--ink); font-weight: 500; font-size: .98rem; line-height: 1.35; }
+
 /* ---------- Reviews ---------- */
 .reviews__grid {
     display: grid;
@@ -860,6 +922,8 @@ ul { margin: 0; padding: 0; list-style: none; }
     .gallery__grid { grid-template-columns: 1fr 1fr; grid-auto-rows: 170px; }
     .gallery__item--wide { grid-column: span 2; }
     .footer__inner { grid-template-columns: 1fr; }
+    .event-card { padding: 38px 22px; }
+    .event-card__details { grid-template-columns: 1fr; gap: 12px; }
     .hero { min-height: 94vh; }
     .hero__actions { flex-direction: column; align-items: stretch; }
     .hero__actions .btn { width: 100%; }
