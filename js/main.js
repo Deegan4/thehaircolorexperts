@@ -443,6 +443,13 @@
                 return typeof price === 'number' ? '$' + price.toFixed(2) : 'Ask in salon';
             }
 
+            // Prefer the official product image when set; fall back to the
+            // in-salon shelf photo if it's missing or fails to load.
+            function setImgWithFallback(imgEl, p) {
+                imgEl.onerror = function () { imgEl.onerror = null; imgEl.src = p.img; };
+                imgEl.src = p.image || p.img;
+            }
+
             /* ----- Cart state (persisted to localStorage) ----- */
             var CART_KEY = 'thce-cart';
             var cart = [];
@@ -536,9 +543,9 @@
                     var media = document.createElement('div');
                     media.className = 'product-card__media';
                     var img = document.createElement('img');
-                    img.src = p.img;
                     img.alt = p.brand + ' ' + p.name;
                     img.loading = 'lazy';
+                    setImgWithFallback(img, p);
                     media.appendChild(img);
 
                     var body = document.createElement('div');
@@ -574,7 +581,8 @@
                     add.className = 'product-card__add';
                     add.textContent = 'Add';
                     add.setAttribute('aria-label', 'Add ' + p.name + ' to pickup list');
-                    add.addEventListener('click', function () {
+                    add.addEventListener('click', function (e) {
+                        e.stopPropagation();
                         addToCart(p.id);
                         add.textContent = 'Added ✓';
                         add.classList.add('is-added');
@@ -593,6 +601,17 @@
                     body.appendChild(foot);
                     card.appendChild(media);
                     card.appendChild(body);
+
+                    // The whole card opens the product detail view (the Add
+                    // button stops propagation so it only adds to the cart).
+                    card.tabIndex = 0;
+                    card.setAttribute('role', 'button');
+                    card.setAttribute('aria-label', 'View details for ' + p.name);
+                    card.addEventListener('click', function () { openProduct(p.id); });
+                    card.addEventListener('keydown', function (e) {
+                        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openProduct(p.id); }
+                    });
+
                     shopGrid.appendChild(card);
                 });
             }
@@ -638,9 +657,9 @@
 
                     var thumb = document.createElement('img');
                     thumb.className = 'cart-item__thumb';
-                    thumb.src = p.img;
                     thumb.alt = '';
                     thumb.loading = 'lazy';
+                    setImgWithFallback(thumb, p);
 
                     var info = document.createElement('div');
                     info.className = 'cart-item__info';
@@ -749,6 +768,62 @@
                     field.addEventListener('input', function () { field.classList.remove('is-invalid'); });
                 });
             }
+
+            /* ----- Product detail modal ----- */
+            var productModal = document.getElementById('productModal');
+            var productOverlay = document.getElementById('productOverlay');
+            var productClose = document.getElementById('productClose');
+            var pmImg = document.getElementById('pmImg');
+            var pmBrand = document.getElementById('pmBrand');
+            var pmName = document.getElementById('pmName');
+            var pmSize = document.getElementById('pmSize');
+            var pmDesc = document.getElementById('pmDesc');
+            var pmPrice = document.getElementById('pmPrice');
+            var pmAdd = document.getElementById('pmAdd');
+            var pmCurrentId = null;
+
+            function openProduct(id) {
+                var p = byId[id];
+                if (!p || !productModal) { return; }
+                pmCurrentId = id;
+                pmImg.alt = p.brand + ' ' + p.name;
+                setImgWithFallback(pmImg, p);
+                pmBrand.textContent = p.brand;
+                pmName.textContent = p.name;
+                pmSize.textContent = p.size;
+                pmDesc.textContent = p.desc || '';
+                pmPrice.textContent = fmtPrice(p.price);
+                pmPrice.className = 'product-modal__price' + (typeof p.price === 'number' ? '' : ' product-modal__price--tbd');
+                if (pmAdd) { pmAdd.textContent = 'Add to pickup list'; }
+                productModal.hidden = false;
+                productModal.setAttribute('aria-hidden', 'false');
+                if (productOverlay) { productOverlay.hidden = false; }
+                document.body.classList.add('cart-open');
+                if (productClose) { productClose.focus(); }
+            }
+
+            function closeProduct() {
+                if (!productModal) { return; }
+                productModal.hidden = true;
+                productModal.setAttribute('aria-hidden', 'true');
+                if (productOverlay) { productOverlay.hidden = true; }
+                if (cartDrawer.hidden) { document.body.classList.remove('cart-open'); }
+                pmCurrentId = null;
+            }
+
+            if (productClose) { productClose.addEventListener('click', closeProduct); }
+            if (productOverlay) { productOverlay.addEventListener('click', closeProduct); }
+            if (pmAdd) {
+                pmAdd.addEventListener('click', function () {
+                    if (!pmCurrentId) { return; }
+                    addToCart(pmCurrentId);
+                    pmAdd.textContent = 'Added ✓';
+                    setTimeout(function () { pmAdd.textContent = 'Add to pickup list'; }, 1100);
+                });
+            }
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && productModal && !productModal.hidden) { closeProduct(); }
+            });
 
             renderFilters();
             renderGrid();
