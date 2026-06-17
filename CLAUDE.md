@@ -48,6 +48,11 @@ The booking form is **front-end only** — no backend or email handler is wired.
 
 ## Other top-level content
 
+Client deliverables and source assets that are **not** part of the deployed site (the Pages workflow only ships `index.html`, `css/`, `js/`, `images/`):
+
+- `audit/` — the Website & AI Automation audit (`01_Audit_LIGHTER_COVER.pdf`) and the Google ad-spend solution one-pager (`01e_Google_Ad_Spend_Solution.pdf`).
+- `assets/` — salon product photography (`product-photos/`) and the "Why Not Wednesday" networking flyer.
+- `previews/` — rendered screenshots of the site (desktop hero, full desktop, full mobile).
 - `Pitch_Kit/` — local-only sales/pitch materials, **not** deployed by the Pages workflow. Safe to ignore for site work.
 - `website.rtf` — pre-existing local note, also not deployed.
 - `.remember/` — session memory buffer for the `remember` skill, not site content.
