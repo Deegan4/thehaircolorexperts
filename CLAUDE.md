@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Response style
+
+At the end of every response, include a short **Next steps** section suggesting concrete follow-up actions the user could take.
+
 ## Project
 
 Single-page marketing site for **The Hair Color Experts** salon in Cape Coral, FL. Plain HTML/CSS/vanilla JS — no build step, no package manager, no dependencies.
