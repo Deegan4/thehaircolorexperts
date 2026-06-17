@@ -825,6 +825,140 @@
                 if (e.key === 'Escape' && productModal && !productModal.hidden) { closeProduct(); }
             });
 
+            /* ----- Product advisor (Claude-powered, via /api/advisor) -----
+               Sends the shopper's question + the catalog to the serverless
+               function, which calls Claude and returns product ids + reasons.
+               Output is built with createElement/textContent — XSS-safe. */
+            var advisor = document.getElementById('advisor');
+            var advisorForm = document.getElementById('advisorForm');
+            var advisorInput = document.getElementById('advisorInput');
+            var advisorSend = document.getElementById('advisorSend');
+            var advisorOutput = document.getElementById('advisorOutput');
+
+            if (advisor && advisorForm) {
+                // The /api/advisor function only runs on hosts that execute
+                // serverless functions (Vercel / a custom domain) — not the
+                // github.io static deploy. Hide the advisor where it can't work.
+                if (!/(^|\.)github\.io$/i.test(location.hostname)) { advisor.hidden = false; }
+
+                var clearAdvisor = function () {
+                    while (advisorOutput.firstChild) { advisorOutput.removeChild(advisorOutput.firstChild); }
+                };
+
+                var advisorStatus = function (text, kind) {
+                    clearAdvisor();
+                    var p = document.createElement('p');
+                    p.className = 'advisor__status' + (kind ? ' advisor__status--' + kind : '');
+                    p.textContent = text;
+                    advisorOutput.appendChild(p);
+                };
+
+                var renderAdvisorResult = function (data) {
+                    clearAdvisor();
+                    if (data.message) {
+                        var msg = document.createElement('p');
+                        msg.className = 'advisor__message';
+                        msg.textContent = data.message;
+                        advisorOutput.appendChild(msg);
+                    }
+                    var recs = (data.recommendations || []).filter(function (r) { return byId[r.id]; });
+                    if (recs.length) {
+                        var list = document.createElement('div');
+                        list.className = 'advisor__recs';
+                        recs.forEach(function (r) {
+                            var p = byId[r.id];
+                            var card = document.createElement('article');
+                            card.className = 'advisor-rec';
+                            card.tabIndex = 0;
+                            card.setAttribute('role', 'button');
+                            card.setAttribute('aria-label', 'View details for ' + p.name);
+
+                            var thumb = document.createElement('img');
+                            thumb.className = 'advisor-rec__thumb';
+                            thumb.alt = '';
+                            thumb.loading = 'lazy';
+                            setImgWithFallback(thumb, p);
+
+                            var body = document.createElement('div');
+                            body.className = 'advisor-rec__body';
+                            var nm = document.createElement('span');
+                            nm.className = 'advisor-rec__name';
+                            nm.textContent = p.name;
+                            var meta = document.createElement('span');
+                            meta.className = 'advisor-rec__meta';
+                            meta.textContent = p.brand + ' · ' + p.size + ' · ' + fmtPrice(p.price);
+                            var reason = document.createElement('p');
+                            reason.className = 'advisor-rec__reason';
+                            reason.textContent = r.reason;
+                            body.appendChild(nm);
+                            body.appendChild(meta);
+                            body.appendChild(reason);
+
+                            var add = document.createElement('button');
+                            add.type = 'button';
+                            add.className = 'advisor-rec__add';
+                            add.textContent = 'Add';
+                            add.setAttribute('aria-label', 'Add ' + p.name + ' to pickup list');
+                            add.addEventListener('click', function (e) {
+                                e.stopPropagation();
+                                addToCart(p.id);
+                                add.textContent = 'Added ✓';
+                                setTimeout(function () { add.textContent = 'Add'; }, 1100);
+                            });
+
+                            card.appendChild(thumb);
+                            card.appendChild(body);
+                            card.appendChild(add);
+                            card.addEventListener('click', function () { openProduct(p.id); });
+                            card.addEventListener('keydown', function (e) {
+                                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openProduct(p.id); }
+                            });
+                            list.appendChild(card);
+                        });
+                        advisorOutput.appendChild(list);
+                    }
+                    var hint = document.createElement('p');
+                    hint.className = 'advisor__hint';
+                    hint.textContent = 'Suggestions are a guide — your stylist can confirm the best fit in the salon.';
+                    advisorOutput.appendChild(hint);
+                };
+
+                advisorForm.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    var q = advisorInput.value.trim();
+                    if (!q) { return; }
+                    advisorSend.disabled = true;
+                    advisorStatus('Finding the right products for you…', 'loading');
+
+                    var payload = {
+                        question: q,
+                        products: PRODUCTS.map(function (p) {
+                            return { id: p.id, brand: p.brand, name: p.name, size: p.size, price: p.price, desc: p.desc };
+                        })
+                    };
+
+                    fetch('/api/advisor', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    }).then(function (res) {
+                        return res.json().catch(function () { return {}; }).then(function (data) {
+                            return { ok: res.ok, data: data };
+                        });
+                    }).then(function (result) {
+                        if (!result.ok) {
+                            advisorStatus((result.data && result.data.error) || 'The advisor is unavailable right now. Please call (239) 257-2243.', 'error');
+                        } else {
+                            renderAdvisorResult(result.data);
+                        }
+                    }).catch(function () {
+                        advisorStatus('The advisor isn’t reachable right now — call us at (239) 257-2243 and we’ll help you choose.', 'error');
+                    }).then(function () {
+                        advisorSend.disabled = false;
+                    });
+                });
+            }
+
             renderFilters();
             renderGrid();
             updateCount();

@@ -33,8 +33,19 @@ keep lasting context here.) See `CLAUDE.md` for architecture and conventions.
   `assets/product-photos/` via `setImgWithFallback()`.
 - **Site URL** (`og:url` + schema `url`) points at the GitHub Pages URL "for
   now," pending the real domain.
+- **Product advisor = Claude via a Vercel serverless function.** `#advisor` in
+  the shop POSTs to `/api/advisor.js`, which holds `ANTHROPIC_API_KEY` and calls
+  `claude-opus-4-8` (structured outputs). The front-end has no deps; the
+  function's lone dep (`@anthropic-ai/sdk`) is in `package.json`. **Runs only
+  on Vercel, not GitHub Pages** — the advisor hides itself on `*.github.io`. To
+  go live it needs `ANTHROPIC_API_KEY` set in the Vercel project (incurs Claude
+  API cost per question).
 
 ## Open items / TODO
+
+- [ ] **Set `ANTHROPIC_API_KEY` in Vercel** to activate the product advisor;
+      it's inert (and hidden on github.io) until then. Note the per-call API
+      cost. Consider rate-limiting `/api/advisor` if abuse is a concern.
 
 - [ ] **Verify the 3 approximate prices** against distributor cost; check
       margins on all 18 before real launch.
