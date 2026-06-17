@@ -414,26 +414,26 @@
 
             var PRODUCTS = [
                 // milk_shake — prices are official US milkshakehair.com MSRP unless noted
-                { id: 'ms-silver-shine-whip',   brand: 'milk_shake', name: 'Silver Shine Whipped Cream',          size: '200 ml',  price: 28, desc: 'Violet leave-in foam that neutralizes yellow tones in blonde & grey hair.', img: IMG + 'IMG_6622.jpeg' },
-                { id: 'ms-cwc-warm-brunette',   brand: 'milk_shake', name: 'Color Whipped Cream · Warm Brunette',  size: '100 ml',  price: 28, desc: 'Temporary tone-on-tone color foam that adds warmth to brunettes.', img: IMG + 'IMG_6622.jpeg' },
-                { id: 'ms-cwc-golden-blond',    brand: 'milk_shake', name: 'Color Whipped Cream · Golden Blond',   size: '100 ml',  price: 28, desc: 'Temporary color foam for a sun-kissed golden-blond glow.', img: IMG + 'IMG_6622.jpeg' },
-                { id: 'ms-cwc-violet',          brand: 'milk_shake', name: 'Color Whipped Cream · Violet',         size: '100 ml',  price: 28, desc: 'Temporary violet foam that neutralizes yellow or adds a pop.', img: IMG + 'IMG_6622.jpeg' },
-                { id: 'ms-colour-shampoo',      brand: 'milk_shake', name: 'Color Maintainer Shampoo',            size: '300 ml',  price: 28, desc: 'Sulfate-free shampoo that extends and protects color-treated hair.', img: IMG + 'IMG_6628.jpeg' },
-                { id: 'ms-colour-conditioner',  brand: 'milk_shake', name: 'Color Maintainer Conditioner',        size: '300 ml',  price: 28, desc: 'Paraben-free conditioner that hydrates color-treated hair.', img: IMG + 'IMG_6628.jpeg' },
+                { id: 'ms-silver-shine-whip',   brand: 'milk_shake', name: 'Silver Shine Whipped Cream',          size: '200 ml',  price: 28, desc: 'Violet leave-in foam that neutralizes yellow tones in blonde & grey hair.', img: IMG + 'IMG_6622.jpeg', image: 'https://cdn.shopify.com/s/files/1/0627/9718/5269/products/silver-shine-whipped-cream.jpg?v=1645722518' },
+                { id: 'ms-cwc-warm-brunette',   brand: 'milk_shake', name: 'Color Whipped Cream · Warm Brunette',  size: '100 ml',  price: 28, desc: 'Temporary tone-on-tone color foam that adds warmth to brunettes.', img: IMG + 'IMG_6622.jpeg', image: 'https://cdn.shopify.com/s/files/1/0627/9718/5269/products/Z.ONE-CONCEPT-Milk-Shake-Colour-Whipped-Cream-100ml.jpg' },
+                { id: 'ms-cwc-golden-blond',    brand: 'milk_shake', name: 'Color Whipped Cream · Golden Blond',   size: '100 ml',  price: 28, desc: 'Temporary color foam for a sun-kissed golden-blond glow.', img: IMG + 'IMG_6622.jpeg', image: 'https://cdn.shopify.com/s/files/1/0627/9718/5269/products/Z.ONE-CONCEPT-Milk-Shake-Colour-Whipped-Cream-100ml.jpg' },
+                { id: 'ms-cwc-violet',          brand: 'milk_shake', name: 'Color Whipped Cream · Violet',         size: '100 ml',  price: 28, desc: 'Temporary violet foam that neutralizes yellow or adds a pop.', img: IMG + 'IMG_6622.jpeg', image: 'https://cdn.shopify.com/s/files/1/0627/9718/5269/products/Z.ONE-CONCEPT-Milk-Shake-Colour-Whipped-Cream-100ml.jpg' },
+                { id: 'ms-colour-shampoo',      brand: 'milk_shake', name: 'Color Maintainer Shampoo',            size: '300 ml',  price: 28, desc: 'Sulfate-free shampoo that extends and protects color-treated hair.', img: IMG + 'IMG_6628.jpeg', image: 'https://cdn.shopify.com/s/files/1/0607/5865/5194/files/milk-shake-color-maintainer-shampoo-sulfate-free-300-ml.jpg?v=1736963233' },
+                { id: 'ms-colour-conditioner',  brand: 'milk_shake', name: 'Color Maintainer Conditioner',        size: '300 ml',  price: 28, desc: 'Paraben-free conditioner that hydrates color-treated hair.', img: IMG + 'IMG_6628.jpeg', image: 'https://cdn.shopify.com/s/files/1/0607/5865/5194/files/milk-shake-color-maintainer-conditioner-300-ml.jpg?v=1713288589' },
                 { id: 'ms-sensorial-mint',      brand: 'milk_shake', name: 'Sensorial Mint Shampoo',              size: '300 ml',  price: 23, desc: 'SLS-free invigorating mint shampoo that refreshes scalp and hair.', img: IMG + 'IMG_6628.jpeg' },
-                { id: 'ms-silver-shine-liter',  brand: 'milk_shake', name: 'Silver Shine Shampoo',                size: '1000 ml', price: 62, desc: 'Purple toning shampoo that neutralizes brass in blonde & grey hair.', img: IMG + 'IMG_6629.jpeg' },
-                { id: 'ms-leave-in',            brand: 'milk_shake', name: 'Leave-In Conditioner',                size: '1000 ml', price: 48, desc: 'Vanilla-scented rinse-free cream for smooth, glossy hair.', img: IMG + 'IMG_6629.jpeg' },
-                { id: 'ms-liquid-styler',       brand: 'milk_shake', name: 'Lifestyling Liquid Styler',           size: '200 ml',  price: 26, desc: 'Styling fluid for soft, flexible hold with memory effect.', img: IMG + 'IMG_6626.jpeg' },
-                { id: 'ms-blowdry-primer',      brand: 'milk_shake', name: 'Lifestyling Blow-Dry Primer',         size: '200 ml',  price: 26, desc: 'Pre-styling lotion that adds body and protects from heat.', img: IMG + 'IMG_6626.jpeg' },
-                { id: 'ms-no-frizz-milk',       brand: 'milk_shake', name: 'Glistening Milk',                     size: '125 ml',  price: 30, desc: 'Moisturizing milk that tames frizz and adds brilliant shine.', img: IMG + 'IMG_6627.jpeg' },
+                { id: 'ms-silver-shine-liter',  brand: 'milk_shake', name: 'Silver Shine Shampoo',                size: '1000 ml', price: 62, desc: 'Purple toning shampoo that neutralizes brass in blonde & grey hair.', img: IMG + 'IMG_6629.jpeg', image: 'https://cdn.shopify.com/s/files/1/0607/5865/5194/files/milk-shake-silver-shine-shampoo-1000-ml_a1981152-b6b7-49a3-a88c-fc87ad52bd7d.jpg?v=1757687791' },
+                { id: 'ms-leave-in',            brand: 'milk_shake', name: 'Leave-In Conditioner',                size: '1000 ml', price: 48, desc: 'Vanilla-scented rinse-free cream for smooth, glossy hair.', img: IMG + 'IMG_6629.jpeg', image: 'https://cdn.shopify.com/s/files/1/0607/5865/5194/files/milk-shake-leave-in-conditioner-1000-ml_2a08ea42-3156-4700-9d50-bef9382168fd.jpg?v=1757687885' },
+                { id: 'ms-liquid-styler',       brand: 'milk_shake', name: 'Lifestyling Liquid Styler',           size: '200 ml',  price: 26, desc: 'Styling fluid for soft, flexible hold with memory effect.', img: IMG + 'IMG_6626.jpeg', image: 'https://cdn.shopify.com/s/files/1/0607/5865/5194/files/milk-shake-lifestyling-liquid-styler-200-ml.jpg?v=1764703480' },
+                { id: 'ms-blowdry-primer',      brand: 'milk_shake', name: 'Lifestyling Blow-Dry Primer',         size: '200 ml',  price: 26, desc: 'Pre-styling lotion that adds body and protects from heat.', img: IMG + 'IMG_6626.jpeg', image: 'https://cdn.shopify.com/s/files/1/0627/9718/5269/files/milk-shake-lifestyling-blow-dry-primer-200-ml.jpg?v=1767343226' },
+                { id: 'ms-no-frizz-milk',       brand: 'milk_shake', name: 'Glistening Milk',                     size: '125 ml',  price: 30, desc: 'Moisturizing milk that tames frizz and adds brilliant shine.', img: IMG + 'IMG_6627.jpeg', image: 'https://cdn.shopify.com/s/files/1/0607/5865/5194/files/milk-shake-glistening-milk-125-ml.jpg?v=1713342150' },
                 // amika — prices are loveamika.com MSRP
-                { id: 'am-perk-up',             brand: 'amika',      name: 'Perk Up Dry Shampoo',                 size: '5.3 oz',  price: 26, desc: 'Talc-free dry shampoo that absorbs oil and boosts volume.', img: IMG + 'IMG_6623.jpeg' },
-                { id: 'am-perk-up-plus',        brand: 'amika',      name: 'Perk Up Plus Extended Clean',         size: '5.3 oz',  price: 31, desc: 'AHA-infused dry shampoo for longer-lasting clean roots.', img: IMG + 'IMG_6623.jpeg' },
-                { id: 'am-flash',               brand: 'amika',      name: 'Flash Instant Shine Mask',            size: '6.7 oz',  price: 31, desc: 'In-shower gloss mask for instant, mirror-like shine.', img: IMG + 'IMG_6625.jpeg' },
+                { id: 'am-perk-up',             brand: 'amika',      name: 'Perk Up Dry Shampoo',                 size: '5.3 oz',  price: 26, desc: 'Talc-free dry shampoo that absorbs oil and boosts volume.', img: IMG + 'IMG_6623.jpeg', image: 'https://cdn.shopify.com/s/files/1/2117/1151/files/og_5.3_shadow_2000x2000_669cd765-fd15-4e23-aaa4-b2a473a28a08.png?v=1712954251' },
+                { id: 'am-perk-up-plus',        brand: 'amika',      name: 'Perk Up Plus Extended Clean',         size: '5.3 oz',  price: 31, desc: 'AHA-infused dry shampoo for longer-lasting clean roots.', img: IMG + 'IMG_6623.jpeg', image: 'https://cdn.shopify.com/s/files/1/2117/1151/files/amika_240410_Perk_Up_Plus_ML_Change_trans_shadow_2000x2000_aa1cdc60-78cf-43b5-b6c6-6d202b681970.png?v=1715353485' },
+                { id: 'am-flash',               brand: 'amika',      name: 'Flash Instant Shine Mask',            size: '6.7 oz',  price: 31, desc: 'In-shower gloss mask for instant, mirror-like shine.', img: IMG + 'IMG_6625.jpeg', image: 'https://cdn.shopify.com/s/files/1/2117/1151/products/amika_220314_PDP_Color_Collection_Flash_200ml_2947-RGB-trans-shadow-2000x2000.png?v=1649431469' },
                 // Color Wow
-                { id: 'cw-dream-coat',          brand: 'Color Wow',  name: 'Dream Coat Supernatural Spray',       size: '200 ml',  price: 30, desc: 'Award-winning anti-humidity treatment for frizz-free, glassy hair.', img: IMG + 'IMG_6624.jpeg' },
-                { id: 'cw-dream-coat-xs',       brand: 'Color Wow',  name: 'Dream Coat Extra Strength',           size: '200 ml',  price: 32, desc: 'Ultra-moisturizing anti-frizz treatment for dry, porous hair.', img: IMG + 'IMG_6624.jpeg' },
-                { id: 'cw-shine-spray',         brand: 'Color Wow',  name: 'Extra Mist-ical Shine Spray',         size: '162 ml',  price: 28, desc: 'Lightweight shine + heat-protection mist for glossy hair.', img: IMG + 'IMG_6624.jpeg' }
+                { id: 'cw-dream-coat',          brand: 'Color Wow',  name: 'Dream Coat Supernatural Spray',       size: '200 ml',  price: 30, desc: 'Award-winning anti-humidity treatment for frizz-free, glassy hair.', img: IMG + 'IMG_6624.jpeg', image: 'https://cdn.shopify.com/s/files/1/0587/5210/6688/products/DreamCoat_200ml_main.jpg?v=1647378208' },
+                { id: 'cw-dream-coat-xs',       brand: 'Color Wow',  name: 'Dream Coat Extra Strength',           size: '200 ml',  price: 32, desc: 'Ultra-moisturizing anti-frizz treatment for dry, porous hair.', img: IMG + 'IMG_6624.jpeg', image: 'https://cdn.shopify.com/s/files/1/0587/5210/6688/files/CW574_DreamCoatES_2048x2048_d12cf130-13e7-42f8-8848-69c34d344abd.jpg?v=1738332995' },
+                { id: 'cw-shine-spray',         brand: 'Color Wow',  name: 'Extra Mist-ical Shine Spray',         size: '162 ml',  price: 28, desc: 'Lightweight shine + heat-protection mist for glossy hair.', img: IMG + 'IMG_6624.jpeg', image: 'https://cdn.shopify.com/s/files/1/0587/5210/6688/files/CRE-5114W_Extra_Shine_Spray_Shopify_Main_2048x2048_1.jpg?v=1698088109' }
             ];
 
             var byId = {};
@@ -441,6 +441,13 @@
 
             function fmtPrice(price) {
                 return typeof price === 'number' ? '$' + price.toFixed(2) : 'Ask in salon';
+            }
+
+            // Prefer the official product image when set; fall back to the
+            // in-salon shelf photo if it's missing or fails to load.
+            function setImgWithFallback(imgEl, p) {
+                imgEl.onerror = function () { imgEl.onerror = null; imgEl.src = p.img; };
+                imgEl.src = p.image || p.img;
             }
 
             /* ----- Cart state (persisted to localStorage) ----- */
@@ -536,9 +543,9 @@
                     var media = document.createElement('div');
                     media.className = 'product-card__media';
                     var img = document.createElement('img');
-                    img.src = p.img;
                     img.alt = p.brand + ' ' + p.name;
                     img.loading = 'lazy';
+                    setImgWithFallback(img, p);
                     media.appendChild(img);
 
                     var body = document.createElement('div');
@@ -574,7 +581,8 @@
                     add.className = 'product-card__add';
                     add.textContent = 'Add';
                     add.setAttribute('aria-label', 'Add ' + p.name + ' to pickup list');
-                    add.addEventListener('click', function () {
+                    add.addEventListener('click', function (e) {
+                        e.stopPropagation();
                         addToCart(p.id);
                         add.textContent = 'Added ✓';
                         add.classList.add('is-added');
@@ -593,6 +601,17 @@
                     body.appendChild(foot);
                     card.appendChild(media);
                     card.appendChild(body);
+
+                    // The whole card opens the product detail view (the Add
+                    // button stops propagation so it only adds to the cart).
+                    card.tabIndex = 0;
+                    card.setAttribute('role', 'button');
+                    card.setAttribute('aria-label', 'View details for ' + p.name);
+                    card.addEventListener('click', function () { openProduct(p.id); });
+                    card.addEventListener('keydown', function (e) {
+                        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openProduct(p.id); }
+                    });
+
                     shopGrid.appendChild(card);
                 });
             }
@@ -638,9 +657,9 @@
 
                     var thumb = document.createElement('img');
                     thumb.className = 'cart-item__thumb';
-                    thumb.src = p.img;
                     thumb.alt = '';
                     thumb.loading = 'lazy';
+                    setImgWithFallback(thumb, p);
 
                     var info = document.createElement('div');
                     info.className = 'cart-item__info';
@@ -749,6 +768,62 @@
                     field.addEventListener('input', function () { field.classList.remove('is-invalid'); });
                 });
             }
+
+            /* ----- Product detail modal ----- */
+            var productModal = document.getElementById('productModal');
+            var productOverlay = document.getElementById('productOverlay');
+            var productClose = document.getElementById('productClose');
+            var pmImg = document.getElementById('pmImg');
+            var pmBrand = document.getElementById('pmBrand');
+            var pmName = document.getElementById('pmName');
+            var pmSize = document.getElementById('pmSize');
+            var pmDesc = document.getElementById('pmDesc');
+            var pmPrice = document.getElementById('pmPrice');
+            var pmAdd = document.getElementById('pmAdd');
+            var pmCurrentId = null;
+
+            function openProduct(id) {
+                var p = byId[id];
+                if (!p || !productModal) { return; }
+                pmCurrentId = id;
+                pmImg.alt = p.brand + ' ' + p.name;
+                setImgWithFallback(pmImg, p);
+                pmBrand.textContent = p.brand;
+                pmName.textContent = p.name;
+                pmSize.textContent = p.size;
+                pmDesc.textContent = p.desc || '';
+                pmPrice.textContent = fmtPrice(p.price);
+                pmPrice.className = 'product-modal__price' + (typeof p.price === 'number' ? '' : ' product-modal__price--tbd');
+                if (pmAdd) { pmAdd.textContent = 'Add to pickup list'; }
+                productModal.hidden = false;
+                productModal.setAttribute('aria-hidden', 'false');
+                if (productOverlay) { productOverlay.hidden = false; }
+                document.body.classList.add('cart-open');
+                if (productClose) { productClose.focus(); }
+            }
+
+            function closeProduct() {
+                if (!productModal) { return; }
+                productModal.hidden = true;
+                productModal.setAttribute('aria-hidden', 'true');
+                if (productOverlay) { productOverlay.hidden = true; }
+                if (cartDrawer.hidden) { document.body.classList.remove('cart-open'); }
+                pmCurrentId = null;
+            }
+
+            if (productClose) { productClose.addEventListener('click', closeProduct); }
+            if (productOverlay) { productOverlay.addEventListener('click', closeProduct); }
+            if (pmAdd) {
+                pmAdd.addEventListener('click', function () {
+                    if (!pmCurrentId) { return; }
+                    addToCart(pmCurrentId);
+                    pmAdd.textContent = 'Added ✓';
+                    setTimeout(function () { pmAdd.textContent = 'Add to pickup list'; }, 1100);
+                });
+            }
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && productModal && !productModal.hidden) { closeProduct(); }
+            });
 
             renderFilters();
             renderGrid();
