@@ -413,27 +413,27 @@
             var SALON_SMS_SHOP = '+12392572243';
 
             var PRODUCTS = [
-                // milk_shake
-                { id: 'ms-silver-shine-whip',   brand: 'milk_shake', name: 'Silver Shine Whipped Cream',        size: '200 ml',  price: null, img: IMG + 'IMG_6622.jpeg' },
-                { id: 'ms-cwc-warm-brunette',   brand: 'milk_shake', name: 'Colour Whipped Cream · Warm Brunette', size: '100 ml', price: null, img: IMG + 'IMG_6622.jpeg' },
-                { id: 'ms-cwc-golden-blond',    brand: 'milk_shake', name: 'Colour Whipped Cream · Golden Blond',  size: '100 ml', price: null, img: IMG + 'IMG_6622.jpeg' },
-                { id: 'ms-cwc-violet',          brand: 'milk_shake', name: 'Colour Whipped Cream · Violet',        size: '100 ml', price: null, img: IMG + 'IMG_6622.jpeg' },
-                { id: 'ms-colour-shampoo',      brand: 'milk_shake', name: 'Colour Maintainer Shampoo',           size: '300 ml', price: null, img: IMG + 'IMG_6628.jpeg' },
-                { id: 'ms-colour-conditioner',  brand: 'milk_shake', name: 'Colour Maintainer Conditioner',       size: '300 ml', price: null, img: IMG + 'IMG_6628.jpeg' },
-                { id: 'ms-sensorial-mint',      brand: 'milk_shake', name: 'Sensorial Mint Shampoo',              size: '300 ml', price: null, img: IMG + 'IMG_6628.jpeg' },
-                { id: 'ms-silver-shine-liter',  brand: 'milk_shake', name: 'Silver Shine Shampoo',                size: '1000 ml', price: null, img: IMG + 'IMG_6629.jpeg' },
-                { id: 'ms-leave-in',            brand: 'milk_shake', name: 'Leave-In Conditioner',                size: '1000 ml', price: null, img: IMG + 'IMG_6629.jpeg' },
-                { id: 'ms-liquid-styler',       brand: 'milk_shake', name: 'Lifestyling Liquid Styler',           size: '250 ml', price: null, img: IMG + 'IMG_6626.jpeg' },
-                { id: 'ms-blowdry-primer',      brand: 'milk_shake', name: 'Lifestyling Blow-Dry Primer',         size: '175 ml', price: null, img: IMG + 'IMG_6626.jpeg' },
-                { id: 'ms-no-frizz-milk',       brand: 'milk_shake', name: 'No Frizz Glistening Milk',            size: '125 ml', price: null, img: IMG + 'IMG_6627.jpeg' },
-                // amika
-                { id: 'am-perk-up',             brand: 'amika',      name: 'Perk Up Dry Shampoo',                 size: '5.3 oz', price: null, img: IMG + 'IMG_6623.jpeg' },
-                { id: 'am-perk-up-plus',        brand: 'amika',      name: 'Perk Up Plus Extended Clean',         size: '5.3 oz', price: null, img: IMG + 'IMG_6623.jpeg' },
-                { id: 'am-flash',               brand: 'amika',      name: 'Flash Instant Shine Spray',           size: '6.7 oz', price: null, img: IMG + 'IMG_6625.jpeg' },
+                // milk_shake — prices are official US milkshakehair.com MSRP unless noted
+                { id: 'ms-silver-shine-whip',   brand: 'milk_shake', name: 'Silver Shine Whipped Cream',          size: '200 ml',  price: 28, desc: 'Violet leave-in foam that neutralizes yellow tones in blonde & grey hair.', img: IMG + 'IMG_6622.jpeg' },
+                { id: 'ms-cwc-warm-brunette',   brand: 'milk_shake', name: 'Color Whipped Cream · Warm Brunette',  size: '100 ml',  price: 28, desc: 'Temporary tone-on-tone color foam that adds warmth to brunettes.', img: IMG + 'IMG_6622.jpeg' },
+                { id: 'ms-cwc-golden-blond',    brand: 'milk_shake', name: 'Color Whipped Cream · Golden Blond',   size: '100 ml',  price: 28, desc: 'Temporary color foam for a sun-kissed golden-blond glow.', img: IMG + 'IMG_6622.jpeg' },
+                { id: 'ms-cwc-violet',          brand: 'milk_shake', name: 'Color Whipped Cream · Violet',         size: '100 ml',  price: 28, desc: 'Temporary violet foam that neutralizes yellow or adds a pop.', img: IMG + 'IMG_6622.jpeg' },
+                { id: 'ms-colour-shampoo',      brand: 'milk_shake', name: 'Color Maintainer Shampoo',            size: '300 ml',  price: 28, desc: 'Sulfate-free shampoo that extends and protects color-treated hair.', img: IMG + 'IMG_6628.jpeg' },
+                { id: 'ms-colour-conditioner',  brand: 'milk_shake', name: 'Color Maintainer Conditioner',        size: '300 ml',  price: 28, desc: 'Paraben-free conditioner that hydrates color-treated hair.', img: IMG + 'IMG_6628.jpeg' },
+                { id: 'ms-sensorial-mint',      brand: 'milk_shake', name: 'Sensorial Mint Shampoo',              size: '300 ml',  price: 23, desc: 'SLS-free invigorating mint shampoo that refreshes scalp and hair.', img: IMG + 'IMG_6628.jpeg' },
+                { id: 'ms-silver-shine-liter',  brand: 'milk_shake', name: 'Silver Shine Shampoo',                size: '1000 ml', price: 62, desc: 'Purple toning shampoo that neutralizes brass in blonde & grey hair.', img: IMG + 'IMG_6629.jpeg' },
+                { id: 'ms-leave-in',            brand: 'milk_shake', name: 'Leave-In Conditioner',                size: '1000 ml', price: 48, desc: 'Vanilla-scented rinse-free cream for smooth, glossy hair.', img: IMG + 'IMG_6629.jpeg' },
+                { id: 'ms-liquid-styler',       brand: 'milk_shake', name: 'Lifestyling Liquid Styler',           size: '200 ml',  price: 26, desc: 'Styling fluid for soft, flexible hold with memory effect.', img: IMG + 'IMG_6626.jpeg' },
+                { id: 'ms-blowdry-primer',      brand: 'milk_shake', name: 'Lifestyling Blow-Dry Primer',         size: '200 ml',  price: 26, desc: 'Pre-styling lotion that adds body and protects from heat.', img: IMG + 'IMG_6626.jpeg' },
+                { id: 'ms-no-frizz-milk',       brand: 'milk_shake', name: 'Glistening Milk',                     size: '125 ml',  price: 30, desc: 'Moisturizing milk that tames frizz and adds brilliant shine.', img: IMG + 'IMG_6627.jpeg' },
+                // amika — prices are loveamika.com MSRP
+                { id: 'am-perk-up',             brand: 'amika',      name: 'Perk Up Dry Shampoo',                 size: '5.3 oz',  price: 26, desc: 'Talc-free dry shampoo that absorbs oil and boosts volume.', img: IMG + 'IMG_6623.jpeg' },
+                { id: 'am-perk-up-plus',        brand: 'amika',      name: 'Perk Up Plus Extended Clean',         size: '5.3 oz',  price: 31, desc: 'AHA-infused dry shampoo for longer-lasting clean roots.', img: IMG + 'IMG_6623.jpeg' },
+                { id: 'am-flash',               brand: 'amika',      name: 'Flash Instant Shine Mask',            size: '6.7 oz',  price: 31, desc: 'In-shower gloss mask for instant, mirror-like shine.', img: IMG + 'IMG_6625.jpeg' },
                 // Color Wow
-                { id: 'cw-dream-coat',          brand: 'Color Wow',  name: 'Dream Coat Supernatural Spray',       size: '200 ml', price: null, img: IMG + 'IMG_6624.jpeg' },
-                { id: 'cw-dream-coat-xs',       brand: 'Color Wow',  name: 'Dream Coat Extra Strength',           size: '200 ml', price: null, img: IMG + 'IMG_6624.jpeg' },
-                { id: 'cw-shine-spray',         brand: 'Color Wow',  name: 'Extra Mistical Shine Spray',          size: '162 ml', price: null, img: IMG + 'IMG_6624.jpeg' }
+                { id: 'cw-dream-coat',          brand: 'Color Wow',  name: 'Dream Coat Supernatural Spray',       size: '200 ml',  price: 30, desc: 'Award-winning anti-humidity treatment for frizz-free, glassy hair.', img: IMG + 'IMG_6624.jpeg' },
+                { id: 'cw-dream-coat-xs',       brand: 'Color Wow',  name: 'Dream Coat Extra Strength',           size: '200 ml',  price: 32, desc: 'Ultra-moisturizing anti-frizz treatment for dry, porous hair.', img: IMG + 'IMG_6624.jpeg' },
+                { id: 'cw-shine-spray',         brand: 'Color Wow',  name: 'Extra Mist-ical Shine Spray',         size: '162 ml',  price: 28, desc: 'Lightweight shine + heat-protection mist for glossy hair.', img: IMG + 'IMG_6624.jpeg' }
             ];
 
             var byId = {};
@@ -556,6 +556,13 @@
                     sizeEl.className = 'product-card__size';
                     sizeEl.textContent = p.size;
 
+                    var descEl = null;
+                    if (p.desc) {
+                        descEl = document.createElement('p');
+                        descEl.className = 'product-card__desc';
+                        descEl.textContent = p.desc;
+                    }
+
                     var foot = document.createElement('div');
                     foot.className = 'product-card__foot';
                     var priceEl = document.createElement('span');
@@ -582,6 +589,7 @@
                     body.appendChild(brandEl);
                     body.appendChild(nameEl);
                     body.appendChild(sizeEl);
+                    if (descEl) { body.appendChild(descEl); }
                     body.appendChild(foot);
                     card.appendChild(media);
                     card.appendChild(body);

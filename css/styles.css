@@ -1364,7 +1364,8 @@ body { counter-reset: sec; }
     margin-bottom: 6px;
 }
 .product-card__name { font-size: 1.05rem; line-height: 1.25; margin: 0 0 4px; }
-.product-card__size { font-size: .85rem; color: var(--muted); margin-bottom: 16px; }
+.product-card__size { font-size: .85rem; color: var(--muted); margin-bottom: 10px; }
+.product-card__desc { font-size: .85rem; line-height: 1.5; color: var(--muted); margin: 0 0 16px; }
 .product-card__foot {
     display: flex;
     align-items: center;
