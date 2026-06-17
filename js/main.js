@@ -396,5 +396,363 @@
                 if (e.key === 'Escape' && !panel.hidden) { toggleChat(false); }
             });
         }
+
+        /* ---------- Shop & reservation cart ----------
+           PRODUCTS is the single source of truth for the storefront — edit
+           names, sizes, brands, prices, and the photo each card uses right
+           here. `price` may be a number (e.g. 28) or null to show "Ask in
+           salon" until you set it. The shelf photos in assets/product-photos/
+           show several items each; swap in individual product shots as you get
+           them. Cart rows are built with createElement/textContent, so the
+           reservation flow is XSS-safe by construction, like the booking chat. */
+        var shopGrid = document.getElementById('shopGrid');
+        var cartDrawer = document.getElementById('cart');
+
+        if (shopGrid && cartDrawer) {
+            var IMG = 'assets/product-photos/';
+            var SALON_SMS_SHOP = '+12392572243';
+
+            var PRODUCTS = [
+                // milk_shake — prices are official US milkshakehair.com MSRP unless noted
+                { id: 'ms-silver-shine-whip',   brand: 'milk_shake', name: 'Silver Shine Whipped Cream',          size: '200 ml',  price: 28, desc: 'Violet leave-in foam that neutralizes yellow tones in blonde & grey hair.', img: IMG + 'IMG_6622.jpeg' },
+                { id: 'ms-cwc-warm-brunette',   brand: 'milk_shake', name: 'Color Whipped Cream · Warm Brunette',  size: '100 ml',  price: 28, desc: 'Temporary tone-on-tone color foam that adds warmth to brunettes.', img: IMG + 'IMG_6622.jpeg' },
+                { id: 'ms-cwc-golden-blond',    brand: 'milk_shake', name: 'Color Whipped Cream · Golden Blond',   size: '100 ml',  price: 28, desc: 'Temporary color foam for a sun-kissed golden-blond glow.', img: IMG + 'IMG_6622.jpeg' },
+                { id: 'ms-cwc-violet',          brand: 'milk_shake', name: 'Color Whipped Cream · Violet',         size: '100 ml',  price: 28, desc: 'Temporary violet foam that neutralizes yellow or adds a pop.', img: IMG + 'IMG_6622.jpeg' },
+                { id: 'ms-colour-shampoo',      brand: 'milk_shake', name: 'Color Maintainer Shampoo',            size: '300 ml',  price: 28, desc: 'Sulfate-free shampoo that extends and protects color-treated hair.', img: IMG + 'IMG_6628.jpeg' },
+                { id: 'ms-colour-conditioner',  brand: 'milk_shake', name: 'Color Maintainer Conditioner',        size: '300 ml',  price: 28, desc: 'Paraben-free conditioner that hydrates color-treated hair.', img: IMG + 'IMG_6628.jpeg' },
+                { id: 'ms-sensorial-mint',      brand: 'milk_shake', name: 'Sensorial Mint Shampoo',              size: '300 ml',  price: 23, desc: 'SLS-free invigorating mint shampoo that refreshes scalp and hair.', img: IMG + 'IMG_6628.jpeg' },
+                { id: 'ms-silver-shine-liter',  brand: 'milk_shake', name: 'Silver Shine Shampoo',                size: '1000 ml', price: 62, desc: 'Purple toning shampoo that neutralizes brass in blonde & grey hair.', img: IMG + 'IMG_6629.jpeg' },
+                { id: 'ms-leave-in',            brand: 'milk_shake', name: 'Leave-In Conditioner',                size: '1000 ml', price: 48, desc: 'Vanilla-scented rinse-free cream for smooth, glossy hair.', img: IMG + 'IMG_6629.jpeg' },
+                { id: 'ms-liquid-styler',       brand: 'milk_shake', name: 'Lifestyling Liquid Styler',           size: '200 ml',  price: 26, desc: 'Styling fluid for soft, flexible hold with memory effect.', img: IMG + 'IMG_6626.jpeg' },
+                { id: 'ms-blowdry-primer',      brand: 'milk_shake', name: 'Lifestyling Blow-Dry Primer',         size: '200 ml',  price: 26, desc: 'Pre-styling lotion that adds body and protects from heat.', img: IMG + 'IMG_6626.jpeg' },
+                { id: 'ms-no-frizz-milk',       brand: 'milk_shake', name: 'Glistening Milk',                     size: '125 ml',  price: 30, desc: 'Moisturizing milk that tames frizz and adds brilliant shine.', img: IMG + 'IMG_6627.jpeg' },
+                // amika — prices are loveamika.com MSRP
+                { id: 'am-perk-up',             brand: 'amika',      name: 'Perk Up Dry Shampoo',                 size: '5.3 oz',  price: 26, desc: 'Talc-free dry shampoo that absorbs oil and boosts volume.', img: IMG + 'IMG_6623.jpeg' },
+                { id: 'am-perk-up-plus',        brand: 'amika',      name: 'Perk Up Plus Extended Clean',         size: '5.3 oz',  price: 31, desc: 'AHA-infused dry shampoo for longer-lasting clean roots.', img: IMG + 'IMG_6623.jpeg' },
+                { id: 'am-flash',               brand: 'amika',      name: 'Flash Instant Shine Mask',            size: '6.7 oz',  price: 31, desc: 'In-shower gloss mask for instant, mirror-like shine.', img: IMG + 'IMG_6625.jpeg' },
+                // Color Wow
+                { id: 'cw-dream-coat',          brand: 'Color Wow',  name: 'Dream Coat Supernatural Spray',       size: '200 ml',  price: 30, desc: 'Award-winning anti-humidity treatment for frizz-free, glassy hair.', img: IMG + 'IMG_6624.jpeg' },
+                { id: 'cw-dream-coat-xs',       brand: 'Color Wow',  name: 'Dream Coat Extra Strength',           size: '200 ml',  price: 32, desc: 'Ultra-moisturizing anti-frizz treatment for dry, porous hair.', img: IMG + 'IMG_6624.jpeg' },
+                { id: 'cw-shine-spray',         brand: 'Color Wow',  name: 'Extra Mist-ical Shine Spray',         size: '162 ml',  price: 28, desc: 'Lightweight shine + heat-protection mist for glossy hair.', img: IMG + 'IMG_6624.jpeg' }
+            ];
+
+            var byId = {};
+            PRODUCTS.forEach(function (p) { byId[p.id] = p; });
+
+            function fmtPrice(price) {
+                return typeof price === 'number' ? '$' + price.toFixed(2) : 'Ask in salon';
+            }
+
+            /* ----- Cart state (persisted to localStorage) ----- */
+            var CART_KEY = 'thce-cart';
+            var cart = [];
+            try {
+                var saved = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+                if (Array.isArray(saved)) {
+                    cart = saved.filter(function (line) {
+                        return line && byId[line.id] && line.qty > 0;
+                    }).map(function (line) {
+                        return { id: line.id, qty: Math.min(99, Math.max(1, line.qty | 0)) };
+                    });
+                }
+            } catch (err) { cart = []; }
+
+            function saveCart() {
+                try { localStorage.setItem(CART_KEY, JSON.stringify(cart)); } catch (err) {}
+            }
+            function cartCount() {
+                return cart.reduce(function (n, line) { return n + line.qty; }, 0);
+            }
+            function findLine(id) {
+                for (var i = 0; i < cart.length; i++) { if (cart[i].id === id) { return cart[i]; } }
+                return null;
+            }
+            function addToCart(id) {
+                var line = findLine(id);
+                if (line) { line.qty = Math.min(99, line.qty + 1); }
+                else { cart.push({ id: id, qty: 1 }); }
+                saveCart(); updateCount(); renderCart();
+            }
+            function setQty(id, qty) {
+                var line = findLine(id);
+                if (!line) { return; }
+                line.qty = qty;
+                if (line.qty < 1) { cart = cart.filter(function (l) { return l.id !== id; }); }
+                saveCart(); updateCount(); renderCart();
+            }
+
+            /* ----- Header cart button + count badge ----- */
+            var cartToggle = document.getElementById('cartToggle');
+            var cartCountEl = document.getElementById('cartCount');
+            function updateCount() {
+                var n = cartCount();
+                if (!cartCountEl) { return; }
+                cartCountEl.textContent = String(n);
+                cartCountEl.hidden = n === 0;
+                if (n > 0 && cartToggle) {
+                    cartToggle.classList.remove('cart-toggle--bump');
+                    void cartToggle.offsetWidth; // restart animation
+                    cartToggle.classList.add('cart-toggle--bump');
+                }
+            }
+
+            /* ----- Product grid + brand filters ----- */
+            var filtersEl = document.getElementById('shopFilters');
+            var brands = PRODUCTS.reduce(function (list, p) {
+                if (list.indexOf(p.brand) === -1) { list.push(p.brand); }
+                return list;
+            }, []);
+            var activeBrand = 'All';
+
+            function renderFilters() {
+                if (!filtersEl) { return; }
+                ['All'].concat(brands).forEach(function (brand) {
+                    var b = document.createElement('button');
+                    b.type = 'button';
+                    b.className = 'shop-filter' + (brand === activeBrand ? ' is-active' : '');
+                    b.textContent = brand;
+                    b.setAttribute('aria-pressed', String(brand === activeBrand));
+                    b.addEventListener('click', function () {
+                        activeBrand = brand;
+                        Array.prototype.forEach.call(filtersEl.children, function (chip) {
+                            var on = chip === b;
+                            chip.classList.toggle('is-active', on);
+                            chip.setAttribute('aria-pressed', String(on));
+                        });
+                        renderGrid();
+                    });
+                    filtersEl.appendChild(b);
+                });
+            }
+
+            function renderGrid() {
+                while (shopGrid.firstChild) { shopGrid.removeChild(shopGrid.firstChild); }
+                PRODUCTS.filter(function (p) {
+                    return activeBrand === 'All' || p.brand === activeBrand;
+                }).forEach(function (p) {
+                    var card = document.createElement('article');
+                    card.className = 'product-card';
+
+                    var media = document.createElement('div');
+                    media.className = 'product-card__media';
+                    var img = document.createElement('img');
+                    img.src = p.img;
+                    img.alt = p.brand + ' ' + p.name;
+                    img.loading = 'lazy';
+                    media.appendChild(img);
+
+                    var body = document.createElement('div');
+                    body.className = 'product-card__body';
+
+                    var brandEl = document.createElement('span');
+                    brandEl.className = 'product-card__brand';
+                    brandEl.textContent = p.brand;
+
+                    var nameEl = document.createElement('h3');
+                    nameEl.className = 'product-card__name';
+                    nameEl.textContent = p.name;
+
+                    var sizeEl = document.createElement('span');
+                    sizeEl.className = 'product-card__size';
+                    sizeEl.textContent = p.size;
+
+                    var descEl = null;
+                    if (p.desc) {
+                        descEl = document.createElement('p');
+                        descEl.className = 'product-card__desc';
+                        descEl.textContent = p.desc;
+                    }
+
+                    var foot = document.createElement('div');
+                    foot.className = 'product-card__foot';
+                    var priceEl = document.createElement('span');
+                    priceEl.className = 'product-card__price' + (typeof p.price === 'number' ? '' : ' product-card__price--tbd');
+                    priceEl.textContent = fmtPrice(p.price);
+
+                    var add = document.createElement('button');
+                    add.type = 'button';
+                    add.className = 'product-card__add';
+                    add.textContent = 'Add';
+                    add.setAttribute('aria-label', 'Add ' + p.name + ' to pickup list');
+                    add.addEventListener('click', function () {
+                        addToCart(p.id);
+                        add.textContent = 'Added ✓';
+                        add.classList.add('is-added');
+                        setTimeout(function () {
+                            add.textContent = 'Add';
+                            add.classList.remove('is-added');
+                        }, 1100);
+                    });
+
+                    foot.appendChild(priceEl);
+                    foot.appendChild(add);
+                    body.appendChild(brandEl);
+                    body.appendChild(nameEl);
+                    body.appendChild(sizeEl);
+                    if (descEl) { body.appendChild(descEl); }
+                    body.appendChild(foot);
+                    card.appendChild(media);
+                    card.appendChild(body);
+                    shopGrid.appendChild(card);
+                });
+            }
+
+            /* ----- Cart drawer ----- */
+            var cartOverlay = document.getElementById('cartOverlay');
+            var cartClose = document.getElementById('cartClose');
+            var cartItemsEl = document.getElementById('cartItems');
+            var cartFoot = document.getElementById('cartFoot');
+            var reserveForm = document.getElementById('cartReserveForm');
+            var cartStatus = document.getElementById('cartStatus');
+
+            function openCart(open) {
+                cartDrawer.hidden = !open;
+                cartDrawer.setAttribute('aria-hidden', String(!open));
+                if (cartOverlay) { cartOverlay.hidden = !open; }
+                document.body.classList.toggle('cart-open', open);
+                if (cartToggle) { cartToggle.setAttribute('aria-expanded', String(open)); }
+                if (open) { renderCart(); }
+            }
+
+            function renderCart() {
+                while (cartItemsEl.firstChild) { cartItemsEl.removeChild(cartItemsEl.firstChild); }
+
+                if (!cart.length) {
+                    var empty = document.createElement('p');
+                    empty.className = 'cart-empty';
+                    empty.textContent = 'Your pickup list is empty. Add products to reserve them.';
+                    cartItemsEl.appendChild(empty);
+                    if (cartFoot) { cartFoot.hidden = true; }
+                    return;
+                }
+                if (cartFoot) { cartFoot.hidden = false; }
+
+                var priced = 0, subtotal = 0;
+                cart.forEach(function (line) {
+                    var p = byId[line.id];
+                    if (!p) { return; }
+                    if (typeof p.price === 'number') { priced++; subtotal += p.price * line.qty; }
+
+                    var row = document.createElement('div');
+                    row.className = 'cart-item';
+
+                    var thumb = document.createElement('img');
+                    thumb.className = 'cart-item__thumb';
+                    thumb.src = p.img;
+                    thumb.alt = '';
+                    thumb.loading = 'lazy';
+
+                    var info = document.createElement('div');
+                    info.className = 'cart-item__info';
+                    var nm = document.createElement('span');
+                    nm.className = 'cart-item__name';
+                    nm.textContent = p.name;
+                    var meta = document.createElement('span');
+                    meta.className = 'cart-item__meta';
+                    meta.textContent = p.brand + ' · ' + p.size + ' · ' + fmtPrice(p.price);
+                    info.appendChild(nm);
+                    info.appendChild(meta);
+
+                    var qty = document.createElement('div');
+                    qty.className = 'cart-qty';
+                    var minus = document.createElement('button');
+                    minus.type = 'button';
+                    minus.className = 'cart-qty__btn';
+                    minus.textContent = '−';
+                    minus.setAttribute('aria-label', 'Decrease quantity of ' + p.name);
+                    minus.addEventListener('click', function () { setQty(line.id, line.qty - 1); });
+                    var num = document.createElement('span');
+                    num.className = 'cart-qty__num';
+                    num.textContent = String(line.qty);
+                    var plus = document.createElement('button');
+                    plus.type = 'button';
+                    plus.className = 'cart-qty__btn';
+                    plus.textContent = '+';
+                    plus.setAttribute('aria-label', 'Increase quantity of ' + p.name);
+                    plus.addEventListener('click', function () { setQty(line.id, line.qty + 1); });
+                    qty.appendChild(minus);
+                    qty.appendChild(num);
+                    qty.appendChild(plus);
+
+                    var remove = document.createElement('button');
+                    remove.type = 'button';
+                    remove.className = 'cart-item__remove';
+                    remove.textContent = '×';
+                    remove.setAttribute('aria-label', 'Remove ' + p.name);
+                    remove.addEventListener('click', function () { setQty(line.id, 0); });
+
+                    row.appendChild(thumb);
+                    row.appendChild(info);
+                    row.appendChild(qty);
+                    row.appendChild(remove);
+                    cartItemsEl.appendChild(row);
+                });
+
+                var totalRow = document.createElement('div');
+                totalRow.className = 'cart-total';
+                if (priced === cart.length) {
+                    totalRow.textContent = 'Estimated total: $' + subtotal.toFixed(2);
+                } else {
+                    totalRow.textContent = 'Total confirmed at pickup';
+                }
+                cartItemsEl.appendChild(totalRow);
+            }
+
+            if (cartToggle) {
+                cartToggle.addEventListener('click', function () { openCart(cartDrawer.hidden); });
+            }
+            if (cartClose) { cartClose.addEventListener('click', function () { openCart(false); }); }
+            if (cartOverlay) { cartOverlay.addEventListener('click', function () { openCart(false); }); }
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && !cartDrawer.hidden) { openCart(false); }
+            });
+
+            if (reserveForm) {
+                reserveForm.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    cartStatus.className = 'form-status';
+                    cartStatus.textContent = '';
+
+                    if (!cart.length) {
+                        cartStatus.classList.add('is-error');
+                        cartStatus.textContent = 'Your pickup list is empty.';
+                        return;
+                    }
+                    var nameEl = document.getElementById('cartName');
+                    var contactEl = document.getElementById('cartContact');
+                    var name = nameEl.value.trim();
+                    var contact = contactEl.value.trim();
+                    var valid = true;
+                    nameEl.classList.toggle('is-invalid', name === '');
+                    contactEl.classList.toggle('is-invalid', contact === '');
+                    if (name === '' || contact === '') { valid = false; }
+                    if (!valid) {
+                        cartStatus.classList.add('is-error');
+                        cartStatus.textContent = 'Please add your name and a phone number or email.';
+                        return;
+                    }
+
+                    var lines = cart.map(function (line) {
+                        var p = byId[line.id];
+                        return '• ' + line.qty + 'x ' + p.name + ' (' + p.size + ')';
+                    });
+                    var body = 'Product reservation for in-store pickup:\n' +
+                        lines.join('\n') +
+                        '\n\nName: ' + name +
+                        '\nContact: ' + contact;
+                    cartStatus.classList.add('is-success');
+                    cartStatus.textContent = 'Opening your messages — send the text and we’ll set these aside.';
+                    window.location.href = 'sms:' + SALON_SMS_SHOP + '&body=' + encodeURIComponent(body);
+                });
+
+                reserveForm.querySelectorAll('input').forEach(function (field) {
+                    field.addEventListener('input', function () { field.classList.remove('is-invalid'); });
+                });
+            }
+
+            renderFilters();
+            renderGrid();
+            updateCount();
+        }
     });
 })();
