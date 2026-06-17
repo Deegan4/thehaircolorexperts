@@ -1288,3 +1288,224 @@ body { counter-reset: sec; }
 /* Slightly airier service + review cards */
 .service-card { padding: 36px 32px 32px; }
 .review { padding: 36px 32px; }
+
+/* =========================================================
+   Shop / take-home products + reservation cart
+   ========================================================= */
+.shop { background: var(--cream-2); border-top: 1px solid var(--line); }
+
+/* Brand filter chips (same language as the chat chips) */
+.shop__filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin: -16px 0 44px;
+}
+.shop-filter {
+    font-family: var(--sans);
+    font-size: .86rem;
+    letter-spacing: .02em;
+    padding: 8px 18px;
+    border-radius: 50px;
+    border: 1.5px solid var(--line);
+    background: #fff;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: background .2s var(--ease), color .2s var(--ease), border-color .2s var(--ease), transform .2s var(--ease);
+}
+.shop-filter:hover { border-color: var(--copper); color: var(--copper-dark); transform: translateY(-1px); }
+.shop-filter.is-active {
+    background: var(--fire);
+    background-size: 140% 140%;
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 8px 20px rgba(227, 34, 44, 0.3);
+}
+
+/* Product grid */
+.shop__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+}
+.product-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    overflow: hidden;
+    transition: transform .35s var(--ease), box-shadow .35s var(--ease), border-color .35s var(--ease);
+}
+.product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-md);
+    border-color: transparent;
+}
+.product-card__media {
+    aspect-ratio: 4 / 3;
+    background: var(--cream-2);
+    overflow: hidden;
+}
+.product-card__media img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform .5s var(--ease);
+}
+.product-card:hover .product-card__media img { transform: scale(1.05); }
+.product-card__body { display: flex; flex-direction: column; flex: 1; padding: 18px 18px 16px; }
+.product-card__brand {
+    text-transform: uppercase;
+    letter-spacing: .16em;
+    font-size: .68rem;
+    font-weight: 600;
+    color: var(--copper);
+    margin-bottom: 6px;
+}
+.product-card__name { font-size: 1.05rem; line-height: 1.25; margin: 0 0 4px; }
+.product-card__size { font-size: .85rem; color: var(--muted); margin-bottom: 16px; }
+.product-card__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: auto;
+}
+.product-card__price { font-weight: 600; color: var(--ink); font-size: 1rem; }
+.product-card__price--tbd { font-weight: 500; font-size: .85rem; color: var(--muted); }
+.product-card__add {
+    flex: none;
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: .82rem;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    padding: .55rem 1.1rem;
+    border-radius: 50px;
+    border: 1.5px solid var(--copper);
+    background: #fff;
+    color: var(--copper-dark);
+    cursor: pointer;
+    transition: background .2s var(--ease), color .2s var(--ease), border-color .2s var(--ease), transform .2s var(--ease);
+}
+.product-card__add:hover { background: var(--fire); background-size: 140% 140%; color: #fff; border-color: transparent; transform: translateY(-1px); }
+.product-card__add.is-added { background: var(--ink); color: #fff; border-color: transparent; }
+.shop__note { text-align: center; margin-top: 48px; color: var(--muted); }
+
+/* Header cart button + count badge */
+.cart-toggle {
+    position: relative;
+    display: inline-grid;
+    place-items: center;
+    width: 44px; height: 44px;
+    margin-left: 4px;
+    border: none;
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+    border-radius: 50%;
+    transition: background .2s var(--ease), color .2s var(--ease);
+}
+.cart-toggle:hover { background: rgba(227, 34, 44, 0.1); color: var(--copper-dark); }
+.cart-toggle__count {
+    position: absolute;
+    top: 2px; right: 2px;
+    min-width: 18px; height: 18px;
+    padding: 0 5px;
+    border-radius: 9px;
+    background: var(--copper);
+    color: #fff;
+    font-family: var(--sans);
+    font-size: .68rem;
+    font-weight: 600;
+    line-height: 18px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(227, 34, 44, 0.45);
+}
+.cart-toggle--bump { animation: cartBump .4s var(--ease); }
+@keyframes cartBump { 30% { transform: scale(1.18); } 60% { transform: scale(.94); } 100% { transform: scale(1); } }
+
+/* Cart drawer + overlay */
+.cart-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 290;
+    background: rgba(20, 17, 16, 0.45);
+    animation: fadeIn .3s var(--ease);
+}
+.cart-overlay[hidden] { display: none; }
+body.cart-open { overflow: hidden; }
+.cart-drawer {
+    position: fixed;
+    top: 0; right: 0; bottom: 0;
+    z-index: 300;
+    width: 400px; max-width: 100vw;
+    background: var(--cream);
+    display: flex;
+    flex-direction: column;
+    box-shadow: -24px 0 60px rgba(20, 17, 16, 0.28);
+    animation: cartSlide .35s var(--ease);
+}
+@keyframes cartSlide { from { transform: translateX(100%); } }
+.cart-drawer[hidden] { display: none; }
+.cart-drawer__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 22px;
+    background: var(--ink);
+    color: #fff;
+    flex: none;
+}
+.cart-drawer__title { color: #fff; font-size: 1.3rem; margin: 0; }
+.cart-drawer__close { background: none; border: none; color: rgba(255,255,255,.8); font-size: 1.9rem; line-height: 1; cursor: pointer; padding: 0 4px; transition: color .2s; }
+.cart-drawer__close:hover { color: #fff; }
+.cart-drawer__body { flex: 1; overflow-y: auto; padding: 18px 22px; }
+.cart-empty { color: var(--muted); text-align: center; margin: 40px 0; }
+.cart-item {
+    display: grid;
+    grid-template-columns: 56px 1fr auto auto;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+}
+.cart-item__thumb { width: 56px; height: 56px; border-radius: 10px; object-fit: cover; background: var(--cream-2); }
+.cart-item__info { display: flex; flex-direction: column; min-width: 0; }
+.cart-item__name { font-weight: 500; color: var(--ink); font-size: .95rem; line-height: 1.3; }
+.cart-item__meta { font-size: .78rem; color: var(--muted); }
+.cart-qty { display: inline-flex; align-items: center; gap: 4px; border: 1px solid var(--line); border-radius: 50px; padding: 2px; background: #fff; }
+.cart-qty__btn {
+    width: 26px; height: 26px;
+    display: grid; place-items: center;
+    border: none; border-radius: 50%;
+    background: transparent;
+    color: var(--copper-dark);
+    font-size: 1.1rem; line-height: 1;
+    cursor: pointer;
+    transition: background .15s var(--ease);
+}
+.cart-qty__btn:hover { background: rgba(227, 34, 44, 0.12); }
+.cart-qty__num { min-width: 18px; text-align: center; font-size: .9rem; font-weight: 500; color: var(--ink); }
+.cart-item__remove { background: none; border: none; color: var(--muted); font-size: 1.4rem; line-height: 1; cursor: pointer; padding: 0 2px; transition: color .2s; }
+.cart-item__remove:hover { color: var(--copper); }
+.cart-total { padding: 16px 0 4px; font-family: var(--serif); font-size: 1.1rem; color: var(--ink); text-align: right; }
+.cart-drawer__foot { flex: none; padding: 18px 22px; border-top: 1px solid var(--line); background: var(--white); }
+.cart-drawer__foot[hidden] { display: none; }
+.cart-reserve__lead { font-size: .88rem; color: var(--muted); margin: 0 0 14px; }
+
+@media (max-width: 980px) {
+    .shop__grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 720px) {
+    .shop__grid { grid-template-columns: repeat(2, 1fr); }
+    .cart-drawer { width: 100vw; }
+}
+@media (max-width: 420px) {
+    .shop__grid { grid-template-columns: 1fr; gap: 18px; }
+}
+
+/* Keep brand left so nav + cart + menu button stay grouped on the right */
+.header__inner .brand { margin-right: auto; }
+@keyframes fadeIn { from { opacity: 0; } }

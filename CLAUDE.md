@@ -29,15 +29,16 @@ A second workflow (`datadog-synthetics.yml`) handles Datadog synthetic test sync
 
 Only four files matter for the live site:
 
-- `index.html` — entire page markup; all sections (`#home`, `#stats`, `#services`, `#about`, `#gallery`, `#workshop`, `#reviews`, `#contact`) live here. Includes `HairSalon` schema.org JSON-LD and Open Graph tags.
+- `index.html` — entire page markup; all sections (`#home`, `#stats`, `#services`, `#about`, `#gallery`, `#shop`, `#workshop`, `#events`, `#reviews`, `#contact`) live here. Includes `HairSalon` schema.org JSON-LD and Open Graph tags.
 - `css/styles.css` — all styling, responsive rules, and reveal-animation classes (`.reveal`, `.is-visible`).
-- `js/main.js` — one IIFE wired on `DOMContentLoaded`. Six responsibilities, each keyed off specific element IDs in `index.html`:
+- `js/main.js` — one IIFE wired on `DOMContentLoaded`. Seven responsibilities, each keyed off specific element IDs in `index.html`:
   1. Mobile nav toggle (`#navToggle` / `#nav`, class `is-open`)
   2. Sticky header scroll state + back-to-top (`#header`, `#toTop`)
   3. `IntersectionObserver` scroll-reveal for `.reveal` elements (respects `prefers-reduced-motion`)
   4. Scrollspy that toggles `.nav__link.is-active` based on which `<section>` is in view
   5. Client-side validation for the booking form (`#bookingForm`, status output in `#formStatus`)
   6. **Booking assistant** chatbot (`#chatFab` / `#chat`) — a scripted (not LLM) guided conversation that collects service → time → name → contact, then hands off via a pre-filled `sms:` link to `(239) 257-2243` or by populating `#bookingForm` and scrolling to it. All bubbles are built with `createElement`/`textContent` (no `innerHTML`) so it's XSS-safe by construction. The `SERVICES` array must stay in sync with the `<select id="service">` options for form pre-fill to match.
+  7. **Shop / reservation cart** (`#shop` section + `#cart` drawer + header `#cartToggle`) — a `PRODUCTS` array is the single source of truth for the storefront; the grid (`#shopGrid`) and brand filters (`#shopFilters`) render from it. There is **no online payment** — customers add items to a cart (persisted in `localStorage` under `thce-cart`), then "reserve for in-store pickup", which hands off via a pre-filled `sms:` link to `(239) 257-2243` listing the items. Each product's `price` is a number or `null` (renders "Ask in salon"); product photos come from `assets/product-photos/`. Cart rows are built with `createElement`/`textContent`, XSS-safe like the chat. **Edit products, prices, and sizes in the `PRODUCTS` array.**
 - `images/logo.jpg` — brand logo (fire-woman on black), used as header/footer mark, favicon, and OG image. **It's a JPEG with a baked-in black background** — appears as a rounded black tile in the cream header. A transparent PNG/SVG would blend better; ask the owner for the original.
 
 The brand palette lives in `:root` CSS variables (`--copper` = fire red `#e3222c`, `--copper-soft` = flame orange, `--gold`, `--blue` = logo star blue, `--fire` = the signature gradient, `--ink` = logo black) — all sampled from the logo. Recolor the whole site by editing those variables.
