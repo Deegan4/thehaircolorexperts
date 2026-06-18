@@ -1698,38 +1698,97 @@ body.cart-open { overflow: hidden; }
 .advisor-rec__add:hover { background: var(--fire); background-size: 140% 140%; color: #fff; border-color: transparent; }
 .advisor__hint { font-size: .8rem; color: var(--muted); margin: 14px 0 0; }
 
-/* Menu & Pricing (Services section) */
-.pricing { margin-top: 56px; }
-.pricing__head { text-align: center; max-width: 620px; margin: 0 auto 36px; }
-.pricing__title { font-size: clamp(1.6rem, 3vw, 2.1rem); margin-bottom: .4rem; }
-.pricing__sub { color: var(--muted); font-size: 1rem; margin: 0; }
-.pricing__groups {
+/* Service Menu (Services section) — elevated, premium price menu */
+.menu {
+    position: relative;
+    margin-top: 64px;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 22px;
+    padding: 52px clamp(24px, 5vw, 64px) 44px;
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+}
+.menu::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 5px;
+    background: var(--fire);
+}
+.menu__head { text-align: center; max-width: 640px; margin: 0 auto 44px; }
+.menu__eyebrow {
+    text-transform: uppercase;
+    letter-spacing: .32em;
+    font-size: .76rem;
+    font-weight: 600;
+    color: var(--copper);
+    margin-bottom: .7rem;
+}
+.menu__title { font-size: clamp(1.7rem, 3.2vw, 2.4rem); margin-bottom: .55rem; }
+.menu__sub { color: var(--muted); font-size: 1.02rem; margin: 0; }
+.menu__grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 28px 48px;
-    max-width: 880px;
-    margin: 0 auto;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px clamp(40px, 6vw, 72px);
 }
-.price-group { background: var(--white); border: 1px solid var(--line); border-radius: 16px; padding: 24px 26px; }
-.price-group__title {
+.menu-cat { padding: 22px 4px; border-top: 1px solid var(--line); }
+.menu-cat__title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
     font-family: var(--serif);
-    font-size: 1.18rem;
-    margin: 0 0 14px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid var(--line);
+    font-size: 1.25rem;
     color: var(--ink);
+    margin: 0 0 16px;
 }
-.price-list { display: flex; flex-direction: column; gap: 12px; }
-.price-row { display: flex; align-items: baseline; gap: 10px; }
-.price-row__name { color: var(--ink-soft); font-size: .98rem; }
-.price-row::after {
+.menu-cat__title::after {
+    content: "";
+    flex: 1;
+    height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--copper-soft), transparent);
+    opacity: .6;
+}
+.menu-list { display: flex; flex-direction: column; gap: 13px; }
+.menu-item { display: flex; align-items: baseline; gap: 12px; }
+.menu-item__name { color: var(--ink-soft); font-size: 1rem; }
+.menu-item::after {
     content: "";
     flex: 1;
     border-bottom: 1px dotted var(--line);
-    transform: translateY(-3px);
+    transform: translateY(-4px);
 }
-.price-row__amt { flex: none; font-weight: 600; color: var(--copper-dark); font-size: 1rem; }
+.menu-item__price {
+    flex: none;
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--copper-dark);
+}
+.menu-item__price--quote {
+    font-family: var(--sans);
+    font-style: italic;
+    font-weight: 400;
+    font-size: .9rem;
+    color: var(--muted);
+}
+.menu-item__price--free {
+    font-family: var(--sans);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    font-size: .8rem;
+    font-weight: 600;
+    color: var(--copper-soft);
+}
+.menu__note { text-align: center; color: var(--muted); font-size: .95rem; margin: 40px 0 0; }
 
+/* On wide screens, balance the six categories across the two columns */
+@media (min-width: 681px) {
+    .menu-cat:nth-child(1), .menu-cat:nth-child(2) { border-top: none; }
+}
 @media (max-width: 680px) {
-    .pricing__groups { grid-template-columns: 1fr; gap: 18px; }
+    .menu { padding: 40px 22px 32px; }
+    .menu__grid { grid-template-columns: 1fr; gap: 0; }
+    .menu-cat:first-child { border-top: none; }
 }
