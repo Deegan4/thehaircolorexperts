@@ -8,7 +8,7 @@ At the end of every response, include a short **Next steps** section suggesting 
 
 ## Project
 
-Single-page marketing site for **The Hair Color Experts** salon in Cape Coral, FL. Plain HTML/CSS/vanilla JS — no build step, no package manager, no dependencies.
+Single-page marketing site for **The Hair Color Experts** salon in Cape Coral, FL. Plain HTML/CSS/vanilla JS — no build step. The front-end has no dependencies; the **one** server-side piece is a Vercel serverless function in `api/` (the Claude-powered product advisor), which has a single npm dependency declared in `package.json`.
 
 ## Commands
 
@@ -30,13 +30,15 @@ The site is served from `main` two ways, and **both serve the whole repo root** 
 
 The `datadog-synthetics.yml` workflow runs Datadog synthetic tests on every PR to `main`. It **fails without the `DD_API_KEY`/`DD_APP_KEY` repo secrets** — a known, pre-existing failure unrelated to site changes; safe to ignore until the secrets are added.
 
+**Serverless function (`api/advisor.js`).** The product advisor needs a backend to hold the Claude API key, so it runs **only where serverless functions execute — i.e. the Vercel deployment, NOT GitHub Pages**. Requirements: set the `ANTHROPIC_API_KEY` environment variable in the Vercel project; Vercel installs `@anthropic-ai/sdk` from `package.json` and serves `api/advisor.js` at `/api/advisor`. On GitHub Pages there is no `/api/advisor`, so the front-end hides the advisor on `*.github.io` hosts and falls back gracefully elsewhere if the call fails. This is the main reason to point the canonical URL at the Vercel/custom domain rather than GitHub Pages once you want the advisor live.
+
 ## Architecture
 
-Only four files matter for the live site:
+Core front-end files (plus the `api/` function — see below):
 
 - `index.html` — entire page markup; all sections (`#home`, `#stats`, `#services`, `#about`, `#gallery`, `#shop`, `#workshop`, `#events`, `#reviews`, `#contact`) live here. Includes `HairSalon` schema.org JSON-LD and Open Graph tags.
 - `css/styles.css` — all styling, responsive rules, and reveal-animation classes (`.reveal`, `.is-visible`).
-- `js/main.js` — one IIFE wired on `DOMContentLoaded`. Seven responsibilities, each keyed off specific element IDs in `index.html`:
+- `js/main.js` — one IIFE wired on `DOMContentLoaded`. Eight responsibilities, each keyed off specific element IDs in `index.html`:
   1. Mobile nav toggle (`#navToggle` / `#nav`, class `is-open`)
   2. Sticky header scroll state + back-to-top (`#header`, `#toTop`)
   3. `IntersectionObserver` scroll-reveal for `.reveal` elements (respects `prefers-reduced-motion`)
@@ -44,13 +46,16 @@ Only four files matter for the live site:
   5. Client-side validation for the booking form (`#bookingForm`, status output in `#formStatus`)
   6. **Booking assistant** chatbot (`#chatFab` / `#chat`) — a scripted (not LLM) guided conversation that collects service → time → name → contact, then hands off via a pre-filled `sms:` link to `(239) 257-2243` or by populating `#bookingForm` and scrolling to it. All bubbles are built with `createElement`/`textContent` (no `innerHTML`) so it's XSS-safe by construction. The `SERVICES` array must stay in sync with the `<select id="service">` options for form pre-fill to match.
   7. **Shop / reservation cart + product detail** (`#shop` section + `#cart` drawer + header `#cartToggle` + `#productModal`) — a `PRODUCTS` array is the single source of truth for the storefront; the grid (`#shopGrid`) and brand filters (`#shopFilters`) render from it. There is **no online payment** — customers add items to a cart (persisted in `localStorage` under `thce-cart`), then "reserve for in-store pickup", which hands off via a pre-filled `sms:` link to `(239) 257-2243` listing the items. Each product card is **clickable** (whole card + keyboard) and opens a detail modal (`#productModal`); the quick **Add** button uses `stopPropagation` so it adds without opening the modal. Cart rows and modal content are built with `createElement`/`textContent`, XSS-safe like the chat. **Edit products in the `PRODUCTS` array** — each entry has `id`, `brand`, `name`, `size`, `price` (number or `null` → "Ask in salon"), `desc`, `img` (local in-salon shelf photo under `assets/product-photos/`), and optional `image` (official packshot URL). `setImgWithFallback()` prefers `image` and falls back to `img` if it's unset or fails to load. **The official `image` URLs are manufacturer photos hotlinked from brand CDNs — replace with licensed/locally-hosted assets before pointing the real domain at the site.**
+  8. **Product advisor** (`#advisor` in `#shop`) — Claude-powered shop helper. Lives in the same shop module (reuses `PRODUCTS`, `byId`, `addToCart`, `openProduct`, `setImgWithFallback`). On submit it POSTs `{ question, products }` to `/api/advisor` and renders the returned `recommendations` as add-to-cart cards plus a `message`. Output is built with `createElement`/`textContent` (XSS-safe). Hidden on `*.github.io` (no function there); shows elsewhere and falls back to a "call the salon" message if the call fails.
+- `api/advisor.js` — Vercel serverless function (ES module, official `@anthropic-ai/sdk`). Holds the `ANTHROPIC_API_KEY` (never in the browser), calls `claude-opus-4-8` with the catalog + question, and returns `{ message, recommendations: [{ id, reason }] }` via structured outputs (`output_config.format`). Validates returned ids against the catalog. See Deployment → Serverless function for the env-var/host requirements.
+- `package.json` — declares the lone dependency (`@anthropic-ai/sdk`) so Vercel installs it for the function. The static front-end uses nothing from it.
 - `images/logo.jpg` — brand logo (fire-woman on black), used as header/footer mark, favicon, and OG image. **It's a JPEG with a baked-in black background** — appears as a rounded black tile in the cream header. A transparent PNG/SVG would blend better; ask the owner for the original.
 
 The brand palette lives in `:root` CSS variables (`--copper` = fire red `#e3222c`, `--copper-soft` = flame orange, `--gold`, `--blue` = logo star blue, `--fire` = the signature gradient, `--ink` = logo black) — all sampled from the logo. Recolor the whole site by editing those variables.
 
 The booking form is **front-end only** — no backend or email handler is wired. Before going live, point it at Formspree / Netlify Forms / a custom endpoint (README notes this). The chatbot's SMS hand-off works without any backend.
 
-**Asset cache-busting:** `index.html` loads `css/styles.css?v=N` and `js/main.js?v=N`. Bump `N` when you change those files so browsers fetch the new version (a plain reload may serve a stale cached `main.js`). Current versions: `styles.css?v=22`, `main.js?v=7`.
+**Asset cache-busting:** `index.html` loads `css/styles.css?v=N` and `js/main.js?v=N`. Bump `N` when you change those files so browsers fetch the new version (a plain reload may serve a stale cached `main.js`). Current versions: `styles.css?v=24`, `main.js?v=8`.
 
 ## Other top-level content
 

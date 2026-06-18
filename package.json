@@ -1,0 +1,10 @@
+{
+  "name": "thehaircolorexperts",
+  "version": "1.0.0",
+  "private": true,
+  "description": "The Hair Color Experts salon site. Static HTML/CSS/JS; the only server-side code is the Vercel function in api/ that powers the product advisor.",
+  "type": "module",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.104.2"
+  }
+}
