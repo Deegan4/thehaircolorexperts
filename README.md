@@ -45,15 +45,21 @@ python3 -m http.server 8000
 # then visit http://localhost:8000
 ```
 
-## Deployment (GitHub Pages)
+## Deployment
 
-The site is published to GitHub Pages by `.github/workflows/deploy-pages.yml`,
-which runs on every push to `main` (and can be run manually from the Actions tab).
+The site ships from `main` to two places:
 
-One-time setup: in the repo, go to **Settings → Pages → Build and deployment →
-Source** and select **GitHub Actions**. To use a custom domain, set it under the
-same Pages settings page (this writes a `CNAME` file and tells you which DNS
-records to add at your registrar).
+- **Vercel** (project `glaciersedgemedia-com`) — auto-deploys `main` to
+  production and builds a preview for each PR. This is the canonical host once
+  `www.thehaircolorexperts.com` is pointed at it, and it's the only host where
+  the Claude product advisor (`/api/advisor`) works. Set
+  `ANTHROPIC_API_KEY` in the Vercel project to activate it.
+- **GitHub Pages** — the built-in `pages-build-deployment` serves the repo
+  root with `.nojekyll`. The product advisor is hidden on `*.github.io`.
+
+To use a custom domain, configure it in the Vercel project (or under
+**Settings → Pages** if relying on GitHub Pages) and update the DNS records at
+your registrar.
 
 ## Business details
 
@@ -61,6 +67,7 @@ records to add at your registrar).
 - **Phone:** (239) 257-2243
 - **Hours:** Mon/Wed/Fri/Sat 9–5 · Tue/Thu 9–7 · Sun closed
 
-> Note: the booking form is a front-end demo and is not yet wired to a backend or
-> email service. Connect it to a form handler (e.g. Formspree, Netlify Forms, or a
-> custom endpoint) before going live.
+> Booking form: `#bookingForm` POSTs to Formspree. Replace
+> `REPLACE_WITH_FORMSPREE_ID` in `index.html` with the real form ID before
+> launch. Until that's done, the form falls back to the front-end-only
+> "thank you" message and submissions are not delivered.
