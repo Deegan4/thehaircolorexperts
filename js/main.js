@@ -117,9 +117,35 @@
                 }
 
                 var name = form.querySelector('#name').value.trim().split(' ')[0];
-                status.classList.add('is-success');
-                status.textContent = 'Thank you' + (name ? ', ' + name : '') + '! We’ll reach out shortly to confirm your appointment.';
-                form.reset();
+                var thanks = 'Thank you' + (name ? ', ' + name : '') + '! We’ll reach out shortly to confirm your appointment.';
+                var endpoint = form.getAttribute('action') || '';
+                var hasEndpoint = endpoint && endpoint.indexOf('REPLACE_WITH_FORMSPREE_ID') === -1;
+
+                if (!hasEndpoint) {
+                    status.classList.add('is-success');
+                    status.textContent = thanks;
+                    form.reset();
+                    return;
+                }
+
+                status.textContent = 'Sending…';
+                fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Accept': 'application/json' },
+                    body: new FormData(form)
+                }).then(function (res) {
+                    if (res.ok) {
+                        status.className = 'form-status is-success';
+                        status.textContent = thanks;
+                        form.reset();
+                    } else {
+                        status.className = 'form-status is-error';
+                        status.textContent = 'Sorry — we couldn’t send that. Please call (239) 257-2243.';
+                    }
+                }).catch(function () {
+                    status.className = 'form-status is-error';
+                    status.textContent = 'Sorry — we couldn’t send that. Please call (239) 257-2243.';
+                });
             });
 
             form.querySelectorAll('input, select, textarea').forEach(function (field) {
